@@ -1,0 +1,134 @@
+{
+  "admins": [
+    {
+      "id": "1",
+      "username": "admin",
+      "password": "admin123",
+      "name": "Admin KuotaKuy"
+    }
+  ],
+  "customers": [
+    {
+      "id": "1",
+      "name": "Budi Santoso",
+      "email": "budi@email.com",
+      "phone": "081234567890",
+      "username": "customer1",
+      "password": "customer123"
+    },
+    {
+      "id": "2",
+      "name": "Siti Rahayu",
+      "email": "siti@email.com",
+      "phone": "082345678901",
+      "username": "customer2",
+      "password": "customer123"
+    },
+    {
+      "id": "3",
+      "name": "Andi Pratama",
+      "email": "andi@email.com",
+      "phone": "083456789012",
+      "username": "customer3",
+      "password": "customer123"
+    },
+    {
+      "name": "sonny",
+      "email": "rilmansonny@gmail.com",
+      "phone": "081236565860",
+      "username": "sonny",
+      "password": "rilman",
+      "id": "4k5cvdCHU1Q"
+    },
+    {
+      "name": "sonny",
+      "email": "rilmansonny@gmail.com",
+      "phone": "081236565860",
+      "username": "sonny",
+      "password": "01032003",
+      "id": "efn09O_ciJQ"
+    }
+  ],
+  "packages": [
+    {
+      "id": "1",
+      "name": "Paket Hemat",
+      "quota": "1GB",
+      "price": 10000,
+      "validity": "7 hari"
+    },
+    {
+      "id": "2",
+      "name": "Paket Gaul",
+      "quota": "5GB",
+      "price": 35000,
+      "validity": "30 hari"
+    },
+    {
+      "id": "3",
+      "name": "Paket Sultan",
+      "quota": "20GB",
+      "price": 100000,
+      "validity": "30 hari"
+    },
+    {
+      "id": "4",
+      "name": "Paket Unlimited",
+      "quota": "Unlimited",
+      "price": 150000,
+      "validity": "30 hari"
+    }
+  ],
+  "transactions": [
+    {
+      "id": "1",
+      "customerId": "1",
+      "packageId": "2",
+      "date": "2026-03-28",
+      "status": "success"
+    },
+    {
+      "id": "2",
+      "customerId": "2",
+      "packageId": "3",
+      "date": "2026-03-29",
+      "status": "pending"
+    },
+    {
+      "id": "3",
+      "customerId": "3",
+      "packageId": "1",
+      "date": "2026-03-30",
+      "status": "success"
+    },
+    {
+      "customerId": "4k5cvdCHU1Q",
+      "packageId": "1",
+      "date": "2026-03-31",
+      "status": "success",
+      "id": "3gQ9s6XL8_8"
+    },
+    {
+      "customerId": "4k5cvdCHU1Q",
+      "packageId": "2",
+      "date": "2026-03-31",
+      "status": "success",
+      "id": "KD3AtfKDtCE"
+    },
+    {
+      "customerId": "4k5cvdCHU1Q",
+      "packageId": "1",
+      "date": "2026-03-31",
+      "status": "success",
+      "id": "9yhj7Lj3VFQ"
+    },
+    {
+      "customerId": "4k5cvdCHU1Q",
+      "packageId": "1",
+      "date": "2026-03-31",
+      "status": "success",
+      "id": "v47BDxnKxgM"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
