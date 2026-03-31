@@ -1,4 +1,3 @@
-import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { CustomerProtectedRoute, AdminProtectedRoute } from './components/ProtectedRoutes';
@@ -16,10 +15,12 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import CustomersPage from './pages/admin/CustomersPage';
 import PackagesAdminPage from './pages/admin/PackagesAdminPage';
 import TransactionsPage from './pages/admin/TransactionsPage';
+import ChatWidget from './components/Common/ChatWidget';
 
 function App() {
   return (
     <AuthProvider>
+      <ChatWidget />
       <Routes>
         {/* Public Customer Routes */}
         <Route path="/" element={<LandingPage />} />

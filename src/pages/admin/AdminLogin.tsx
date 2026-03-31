@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Box, Container, Paper, Typography, TextField, Button, Alert, IconButton, InputAdornment } from '@mui/material';
+import { Box, Container, Paper, Typography, TextField, Button, Alert, IconButton, InputAdornment, Avatar } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { AdminPanelSettings as AdminIcon, Visibility, VisibilityOff } from '@mui/icons-material';
+import { Shield as AdminIcon, Visibility, VisibilityOff } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import { authService } from '../../services/allServices';
 
@@ -21,10 +21,10 @@ const AdminLogin: React.FC = () => {
         loginAdmin({ ...admin, role: 'admin' });
         navigate('/admin/dashboard');
       } else {
-        setError('Admin credentials invalid.');
+        setError('Authentication failed. Invalid pass-key.');
       }
-    } catch (err) {
-      setError('Connection failed.');
+    } catch {
+      setError('Core system connection failure.');
     }
   };
 
@@ -34,55 +34,112 @@ const AdminLogin: React.FC = () => {
       display: 'flex', 
       alignItems: 'center', 
       justifyContent: 'center',
-      bgcolor: '#1a1a1a', // Darker background for admin
+      bgcolor: '#F1F5F9', // Soft Slack/Discord type background
       position: 'relative',
       overflow: 'hidden'
     }}>
-      {/* Decorative pulse */}
-      <Box sx={{ position: 'absolute', width: 400, height: 400, borderRadius: '50%', backgroundColor: 'primary.main', filter: 'blur(100px)', opacity: 0.1, top: -100, right: -100 }} />
-      <Box sx={{ position: 'absolute', width: 300, height: 300, borderRadius: '50%', backgroundColor: 'primary.main', filter: 'blur(100px)', opacity: 0.05, bottom: -50, left: -50 }} />
+      {/* Abstract geometric shapes for professionalism */}
+      <Box sx={{ position: 'absolute', width: 600, height: 600, borderRadius: '50%', backgroundColor: '#FF7043', filter: 'blur(300px)', opacity: 0.1, top: -200, right: -200 }} />
+      <Box sx={{ position: 'absolute', width: 400, height: 400, borderRadius: '50%', backgroundColor: '#FB8C00', filter: 'blur(200px)', opacity: 0.05, bottom: -100, left: -100 }} />
 
-      <Container maxWidth="xs" sx={{ position: 'relative', zIndex: 1 }}>
-        <Paper elevation={24} sx={{ p: 5, borderRadius: 4, textAlign: 'center', bgcolor: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(10px)' }}>
-          <AdminIcon sx={{ fontSize: 64, mb: 2, color: 'primary.main' }} />
-          <Typography variant="h5" sx={{ fontWeight: 800, mb: 1, letterSpacing: -0.5 }}>PANEL ADMIN</Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 4, fontWeight: 500 }}>KUOTAKUY MANAGEMENT SYSTEM</Typography>
+      <Container maxWidth="xs" sx={{ position: 'relative', zIndex: 10 }}>
+        <Paper elevation={0} sx={{ 
+          p: { xs: 4, md: 5 }, 
+          borderRadius: 8, 
+          textAlign: 'center', 
+          bgcolor: 'white', 
+          border: '1px solid #E2E8F0',
+          boxShadow: '0 25px 50px -12px rgba(0,0,0,0.05)'
+        }}>
+          {/* Header Branding */}
+          <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
+            <Avatar sx={{ width: 64, height: 64, bgcolor: '#FF7043', boxShadow: '0 8px 20px rgba(255,112,67,0.3)' }}>
+              <AdminIcon sx={{ fontSize: 32 }} />
+            </Avatar>
+          </Box>
           
-          {error && <Alert severity="error" sx={{ mb: 3, borderRadius: 2 }}>{error}</Alert>}
+          <Typography variant="h5" sx={{ fontWeight: 900, mb: 1, color: '#1E293B', letterSpacing: -1 }}>Administrator Access</Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 5, fontWeight: 600 }}>KUOTAKUY MANAGEMENT SYSTEM</Typography>
+          
+          {error && (
+            <Alert severity="error" variant="standard" sx={{ mb: 4, borderRadius: 3, fontWeight: 700, border: '1px solid #FECACA' }}>
+              {error}
+            </Alert>
+          )}
           
           <form onSubmit={handleSubmit}>
             <TextField 
-              fullWidth label="Admin Username" 
-              variant="outlined" sx={{ mb: 2.5 }} 
+              fullWidth placeholder="Username ID" 
+              variant="outlined" 
               value={username} onChange={(e) => setUsername(e.target.value)} 
               required
-              InputLabelProps={{ shrink: true }}
+              sx={{ 
+                mb: 3,
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: 4,
+                  bgcolor: '#F8FAFC',
+                  fontWeight: 600,
+                  '& fieldset': { borderColor: '#E2E8F0' },
+                  '&:hover fieldset': { borderColor: '#4F46E5' },
+                }
+              }}
             />
             <TextField 
-              fullWidth label="Password" 
+              fullWidth placeholder="System Pass-key" 
               type={showPassword ? 'text' : 'password'} 
-              variant="outlined" sx={{ mb: 4 }} 
+              variant="outlined"
               value={password} onChange={(e) => setPassword(e.target.value)}
               required
-              InputLabelProps={{ shrink: true }}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                    <IconButton onClick={() => setShowPassword(!showPassword)} edge="end" sx={{ color: '#94A3B8' }}>
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 ),
               }}
+              sx={{ 
+                mb: 6,
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: 4,
+                  bgcolor: '#F8FAFC',
+                  fontWeight: 600,
+                  '& fieldset': { borderColor: '#E2E8F0' },
+                  '&:hover fieldset': { borderColor: '#FF7043' },
+                }
+              }}
             />
-            <Button fullWidth variant="contained" color="primary" size="large" type="submit" sx={{ py: 1.8, fontSize: '1rem', fontWeight: 700, borderRadius: 2 }}>
-              DASHBOARD LOGIN
+            <Button 
+              fullWidth 
+              variant="contained" 
+              size="large" 
+              type="submit" 
+              disableElevation
+              sx={{ 
+                py: 2.2, 
+                fontSize: '1rem', 
+                fontWeight: 900, 
+                borderRadius: 4, 
+                bgcolor: '#FF7043', 
+                textTransform: 'none',
+                transition: '0.3s',
+                '&:hover': { bgcolor: '#F4511E', transform: 'translateY(-2px)', boxShadow: '0 10px 20px rgba(255,112,67,0.3)' }
+              }}
+            >
+              Authenticate Portal
             </Button>
           </form>
-          <Typography variant="caption" sx={{ mt: 4, display: 'block', color: 'grey.500' }}>
-            Authorized Personnel Only
-          </Typography>
+
+          <Box sx={{ mt: 5, pt: 3, borderTop: '1px solid #F1F5F9' }}>
+             <Typography variant="caption" sx={{ color: '#CBD5E1', fontWeight: 700, letterSpacing: 0.5 }}>
+                SECURED BY KUOTAKUY AUTH v2.0
+             </Typography>
+          </Box>
         </Paper>
+        <Typography variant="caption" sx={{ textAlign: 'center', display: 'block', mt: 4, color: '#94A3B8', fontWeight: 600 }}>
+           Unauthorized access is strictly prohibited and logged.
+        </Typography>
       </Container>
     </Box>
   );

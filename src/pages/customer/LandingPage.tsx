@@ -55,11 +55,12 @@ const LandingPage: React.FC = () => {
       
       {/* Hero Section Wrapper */}
       <Box sx={{ 
-        height: '100vh', 
+        minHeight: '100vh', 
         display: 'flex', 
         alignItems: 'center', 
         position: 'relative',
-        pt: '112px' // Offset for fixed navbar (80px) + promo bar (32px)
+        pt: { xs: '140px', md: '180px' }, // Increased safe offset for fixed navbar + promo bar
+        pb: 8
       }}>
         <Container maxWidth="lg" sx={{ 
           position: 'relative',

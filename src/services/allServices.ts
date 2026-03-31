@@ -26,7 +26,7 @@ export const transactionService = {
 
 export const authService = {
   loginCustomer: async (username: string, password: string) => {
-    const { data } = await api.get(`/customers?username=${username}&password=${password}`);
+    const { data } = await api.get(`/customers?username=${username.toLowerCase()}&password=${password}`);
     return data[0];
   },
   loginAdmin: async (username: string, password: string) => {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Container, Typography, Grid, Card, CardContent, Button, TextField, InputAdornment, Skeleton, Snackbar, Alert, Dialog, DialogTitle, DialogContent, DialogActions, Divider } from '@mui/material';
+import { Box, Container, Typography, Grid, Card, CardContent, Button, TextField, InputAdornment, Skeleton, Dialog, DialogTitle, DialogContent, DialogActions, Divider, useMediaQuery, useTheme } from '@mui/material';
 import { Search as SearchIcon, Wifi as WifiIcon, AccessTime as TimeIcon } from '@mui/icons-material';
 import { packageService, transactionService } from '../../services/allServices';
 import { useAuth } from '../../context/AuthContext';
@@ -21,9 +21,12 @@ const PackagesPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { user } = useAuth();
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
   const [selectedPkg, setSelectedPkg] = useState<Package | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState('gopay');
 
   useEffect(() => {
     const fetchPackages = async () => {
@@ -53,14 +56,14 @@ const PackagesPage: React.FC = () => {
     try {
       const transaction = {
         customerId: user.id,
+        status: 'success',
+        date: new Date().toISOString(),
         packageId: selectedPkg.id,
-        date: new Date().toISOString().split('T')[0],
-        status: 'success'
+        paymentMethod: paymentMethod 
       };
       await transactionService.create(transaction);
       setOpenConfirm(false);
       setOpenSnackbar(true);
-      setTimeout(() => navigate('/dashboard-customer'), 2000);
     } catch (error) {
       console.error('Purchase failed', error);
     }
@@ -72,15 +75,24 @@ const PackagesPage: React.FC = () => {
   );
 
   return (
-    <Box sx={{ minHeight: '100vh', pb: 10, pt: '112px' }}>
+    <Box sx={{ minHeight: '100vh', pb: 10, pt: { xs: '110px', md: '140px' }, bgcolor: '#F8FAFC' }}>
       <Navbar />
-      <Box sx={{ bgcolor: 'secondary.light', py: 8, mb: 6 }}>
+      
+      {/* Hero Section - Responsive Typography */}
+      <Box sx={{ bgcolor: 'white', py: { xs: 4, md: 8 }, mb: 4, borderBottom: '1px solid #F1F5F9' }}>
         <Container maxWidth="lg">
-          <Typography variant="h3" sx={{ fontWeight: 800, mb: 1, textAlign: 'center' }}>
+          <Typography variant="h3" sx={{ 
+            fontWeight: 900, 
+            mb: 1, 
+            textAlign: 'center',
+            fontSize: { xs: '1.85rem', md: '3rem' },
+            letterSpacing: -1.5,
+            color: '#1E293B'
+          }}>
             Pilih Paket Kamu
           </Typography>
-          <Typography variant="h6" color="text.secondary" sx={{ textAlign: 'center', mb: 4 }}>
-            Semua paket aktif langsung setelah pembayaran.
+          <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center', mb: 4, fontWeight: 500 }}>
+            Kuota murah, instan aktif, hidup makin gaul bareng KuotaKuy!
           </Typography>
           
           <Box maxWidth="600px" sx={{ mx: 'auto' }}>
@@ -93,10 +105,15 @@ const PackagesPage: React.FC = () => {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <SearchIcon color="primary" />
+                    <SearchIcon sx={{ color: '#FF7043' }} />
                   </InputAdornment>
                 ),
-                sx: { borderRadius: 10, bgcolor: 'white' }
+                sx: { 
+                  borderRadius: 5, 
+                  bgcolor: '#F8FAFC',
+                  '& fieldset': { borderColor: '#E2E8F0' },
+                  '&:hover fieldset': { borderColor: '#FF7043' }
+                }
               }}
             />
           </Box>
@@ -106,36 +123,48 @@ const PackagesPage: React.FC = () => {
       <Container maxWidth="lg">
         <Grid container spacing={3}>
           {loading ? (
-            Array.from(new Array(6)).map((_, idx) => (
-              <Grid key={idx} size={{ xs: 12, sm: 6, md: 4 }}>
-                <Skeleton variant="rectangular" height={250} sx={{ borderRadius: 4 }} />
+            [...Array(6)].map((_, idx) => (
+              <Grid key={idx} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+                <Skeleton variant="rectangular" height={280} sx={{ borderRadius: 6 }} />
               </Grid>
             ))
           ) : filteredPackages.length > 0 ? (
             filteredPackages.map((pkg) => (
-              <Grid key={pkg.id} size={{ xs: 12, sm: 6, md: 3 }}>
-                <Card sx={{ 
+              <Grid key={pkg.id} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+                <Card elevation={0} sx={{ 
                   height: '100%', 
                   display: 'flex', 
                   flexDirection: 'column',
-                  transition: 'transform 0.2s',
-                  '&:hover': { transform: 'scale(1.02)' }
+                  borderRadius: 6,
+                  border: '1px solid #F1F5F9',
+                  transition: '0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                  '&:hover': { transform: 'translateY(-10px)', boxShadow: '0 20px 40px rgba(0,0,0,0.05)', borderColor: '#FF7043' }
                 }}>
                   <CardContent sx={{ flexGrow: 1, p: 3, textAlign: 'center' }}>
-                    <Box sx={{ bgcolor: 'secondary.light', p: 2, borderRadius: '50%', display: 'inline-flex', mb: 2 }}>
-                      <WifiIcon color="primary" fontSize="large" />
+                    <Box sx={{ bgcolor: '#FFF3E0', p: 2, borderRadius: 5, display: 'inline-flex', mb: 2.5, color: '#FF7043' }}>
+                      <WifiIcon fontSize="large" sx={{ fontSize: 32 }} />
                     </Box>
-                    <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>{pkg.name}</Typography>
-                    <Typography variant="h4" color="primary.main" sx={{ fontWeight: 800, mb: 1 }}>{pkg.quota}</Typography>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 800, color: '#94A3B8', mb: 1, letterSpacing: 0.5 }}>{pkg.name.toUpperCase()}</Typography>
+                    <Typography variant="h3" sx={{ fontWeight: 900, color: '#FF7043', mb: 1, letterSpacing: -1 }}>{pkg.quota}</Typography>
                     
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, color: 'text.secondary', mb: 2 }}>
-                      <TimeIcon fontSize="small" />
-                      <Typography variant="body2">{pkg.validity}</Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, color: '#64748B', mb: 3 }}>
+                      <TimeIcon sx={{ fontSize: 16 }} />
+                      <Typography variant="caption" sx={{ fontWeight: 800 }}>{pkg.validity}</Typography>
                     </Box>
                     
-                    <Typography variant="h5" sx={{ fontWeight: 700, mb: 3 }}>{formatRupiah(pkg.price)}</Typography>
+                    <Typography variant="h5" sx={{ fontWeight: 900, mb: 3, color: '#1E293B' }}>{formatRupiah(pkg.price)}</Typography>
                     
-                    <Button variant="contained" fullWidth color="primary" onClick={() => handleBuy(pkg)}>
+                    <Button 
+                      variant="contained" 
+                      fullWidth 
+                      onClick={() => handleBuy(pkg)}
+                      sx={{ 
+                        borderRadius: 3.5, fontWeight: 900, py: 1.5,
+                        bgcolor: '#FF7043', '&:hover': { bgcolor: '#F4511E' },
+                        boxShadow: '0 10px 20px rgba(255,112,67,0.2)',
+                        textTransform: 'none'
+                      }}
+                    >
                       Beli Sekarang
                     </Button>
                   </CardContent>
@@ -144,7 +173,9 @@ const PackagesPage: React.FC = () => {
             ))
           ) : (
             <Grid size={12}>
-              <Typography align="center" color="text.secondary">Paket tidak ditemukan.</Typography>
+              <Box sx={{ py: 10, textAlign: 'center' }}>
+                <Typography variant="h6" sx={{ fontWeight: 800, color: '#94A3B8' }}>Duh! Paket Kuotamu Gak Ketemu.</Typography>
+              </Box>
             </Grid>
           )}
         </Grid>
@@ -153,134 +184,79 @@ const PackagesPage: React.FC = () => {
       {/* High-End Professional Checkout Dialog */}
       <Dialog 
         open={openConfirm} 
-        onClose={() => !loading && setOpenConfirm(false)}
+        onClose={() => setOpenConfirm(false)}
         maxWidth="xs"
         fullWidth
-        slotProps={{
-          backdrop: { sx: { backdropFilter: 'blur(8px)', bgcolor: 'rgba(0,0,0,0.4)' } }
-        }}
-        PaperProps={{ 
-          sx: { 
-            borderRadius: 8, 
-            p: 1, 
-            backgroundImage: 'linear-gradient(to bottom, #FFFFFF, #FFFBF9)',
-            boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)' 
-          } 
-        }}
+        PaperProps={{ sx: { borderRadius: 8, p: { xs: 1, sm: 2 } } }}
       >
         <DialogTitle sx={{ textAlign: 'center', pt: 3 }}>
-          <Typography variant="h5" sx={{ fontWeight: 900, color: '#1A1A1A', letterSpacing: -0.5 }}>Metode Pembayaran</Typography>
-          <Typography variant="body2" color="text.secondary">Satu langkah lagi menuju internet ngebut!</Typography>
+          <Typography variant="h5" sx={{ fontWeight: 900, color: '#1E293B', letterSpacing: -0.5 }}>Konfirmasi Beli</Typography>
+          <Typography variant="body2" sx={{ color: '#94A3B8', fontWeight: 600 }}>Tentukan metode pembayaranmu.</Typography>
         </DialogTitle>
         
-        <DialogContent sx={{ mt: 2, px: 3 }}>
-          {/* Package Summary Card */}
-          <Box sx={{ 
-            p: 2.5, 
-            bgcolor: 'primary.main', 
-            borderRadius: 6, 
-            mb: 4, 
-            color: 'white',
-            position: 'relative',
-            overflow: 'hidden',
-            boxShadow: '0 15px 30px rgba(255,112,67,0.3)'
+        <DialogContent sx={{ px: { xs: 2, sm: 4 } }}>
+          <Paper elevation={0} sx={{ 
+            p: 3, bgcolor: '#FF7043', borderRadius: 6, mb: 4, color: 'white',
+            boxShadow: '0 15px 30px rgba(255,112,67,0.3)', position: 'relative', overflow: 'hidden'
           }}>
-            <Box sx={{ position: 'absolute', top: -20, right: -20, width: 100, height: 100, bgcolor: 'rgba(255,255,255,0.1)', borderRadius: '50%' }} />
-            <Typography variant="overline" sx={{ opacity: 0.8, fontWeight: 700 }}>Paket Data</Typography>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-              <Box>
-                <Typography variant="h5" sx={{ fontWeight: 900 }}>{selectedPkg?.quota}</Typography>
-                <Typography variant="body2" sx={{ opacity: 0.9 }}>{selectedPkg?.name}</Typography>
-              </Box>
-              <Typography variant="h6" sx={{ fontWeight: 800 }}>{selectedPkg ? formatRupiah(selectedPkg.price) : ''}</Typography>
+            <Box sx={{ position: 'relative', zIndex: 1 }}>
+              <Typography variant="caption" sx={{ fontWeight: 900, opacity: 0.8, letterSpacing: 1 }}>PAKET DIPILIH</Typography>
+              <Typography variant="h4" sx={{ fontWeight: 900, mt: 0.5 }}>{selectedPkg?.quota}</Typography>
+              <Typography variant="body2" sx={{ fontWeight: 600 }}>{selectedPkg?.name}</Typography>
             </Box>
-          </Box>
+            <WifiIcon sx={{ position: 'absolute', right: -20, bottom: -20, fontSize: 120, opacity: 0.1 }} />
+          </Paper>
 
-          <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-             <Box sx={{ width: 4, height: 16, bgcolor: 'primary.main', borderRadius: 2 }} />
-             Pilih Saldo / E-Wallet
-          </Typography>
-          
-          <Grid container spacing={2} sx={{ mb: 4 }}>
-            {[
-              { id: 'gopay', name: 'GoPay', color: '#00AED6' },
-              { id: 'ovo', name: 'OVO', color: '#4C2A86' },
-              { id: 'dana', name: 'DANA', color: '#118EEA' },
-              { id: 'va', name: 'VA Bank', color: '#666' }
-            ].map((method, idx) => (
-              <Grid key={method.id} size={6}>
+          <Typography variant="subtitle2" sx={{ fontWeight: 900, mb: 2, color: '#1E293B' }}>PILIH E-WALLET</Typography>
+          <Grid container spacing={1.5} sx={{ mb: 4 }}>
+            {['gopay', 'ovo', 'dana', 'va'].map((id) => (
+              <Grid key={id} size={6}>
                 <Button 
                   fullWidth
                   variant="outlined"
+                  onClick={() => setPaymentMethod(id)}
                   sx={{ 
-                    py: 1.8, borderRadius: 5, fontSize: '0.75rem', fontWeight: 800,
-                    borderColor: idx === 0 ? method.color : '#EEE', 
-                    bgcolor: 'white',
-                    color: 'text.primary',
-                    display: 'flex', flexDirection: 'column', gap: 1,
-                    borderWidth: idx === 0 ? 2 : 1,
-                    transition: '0.2s',
-                    '&:hover': { bgcolor: '#FDFDFD', borderColor: method.color }
+                    py: 2, borderRadius: 4, border: '2px solid',
+                    borderColor: paymentMethod === id ? '#FF7043' : '#F1F5F9',
+                    bgcolor: paymentMethod === id ? '#FFF3E0' : 'white',
+                    color: '#1E293B', fontWeight: 900, textTransform: 'uppercase', fontSize: '0.65rem'
                   }}
                 >
-                  <Box 
-                    component="img" 
-                    src={`/assets/payments/${method.id}.png`} 
-                    sx={{ height: 28, width: 'auto', objectFit: 'contain', filter: idx === 0 ? 'none' : 'grayscale(100%)', opacity: idx === 0 ? 1 : 0.6 }} 
-                  />
-                  {method.name}
+                  {id}
                 </Button>
               </Grid>
             ))}
           </Grid>
 
-          {/* Detailed Price Breakdown */}
-          <Box sx={{ bgcolor: '#F9F9F9', p: 2, borderRadius: 5, mb: 3 }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-              <Typography variant="body2" color="text.secondary">Harga Paket</Typography>
-              <Typography variant="body2" sx={{ fontWeight: 600 }}>{selectedPkg ? formatRupiah(selectedPkg.price) : ''}</Typography>
+          <Box sx={{ bgcolor: '#F8FAFC', p: 2, borderRadius: 5 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1.5 }}>
+              <Typography variant="body2" sx={{ color: '#64748B', fontWeight: 700 }}>Total Pembayaran</Typography>
+              <Typography variant="h6" sx={{ fontWeight: 900, color: '#FF7043' }}>{selectedPkg ? formatRupiah(selectedPkg.price) : ''}</Typography>
             </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-              <Typography variant="body2" color="text.secondary">Biaya Admin</Typography>
-              <Typography variant="body2" sx={{ fontWeight: 600, color: '#66BB6A' }}>Gratis</Typography>
-            </Box>
-            <Divider sx={{ my: 1.5, borderStyle: 'dashed' }} />
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>Total Bayar</Typography>
-              <Typography variant="h6" sx={{ fontWeight: 900, color: 'primary.main' }}>{selectedPkg ? formatRupiah(selectedPkg.price) : ''}</Typography>
-            </Box>
-          </Box>
-          
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, opacity: 0.6 }}>
-             <WifiIcon sx={{ fontSize: 18 }} />
-             <Typography variant="caption" sx={{ fontWeight: 700 }}>Secure 256-bit SSL Payment</Typography>
+            <Typography variant="caption" sx={{ color: '#94A3B8', fontWeight: 800, textAlign: 'center', display: 'block' }}>PAJAK & BIAYA ADMIN: Rp 0</Typography>
           </Box>
         </DialogContent>
         
-        <DialogActions sx={{ p: 4, pt: 0, flexDirection: 'column', gap: 1.5 }}>
+        <DialogActions sx={{ p: 4, pt: 0, flexDirection: 'column', gap: 2 }}>
           <Button 
             onClick={confirmPurchase} 
-            disabled={loading}
             variant="contained" 
             fullWidth 
-            sx={{ 
-              py: 2, borderRadius: 6, fontWeight: 900, fontSize: '1rem',
-              boxShadow: '0 15px 30px rgba(255,112,67,0.4)',
-              textTransform: 'none'
-            }}
+            sx={{ py: 2, borderRadius: 4, fontWeight: 900, fontSize: '1.1rem', bgcolor: '#FF7043', boxShadow: '0 10px 20px rgba(255,112,67,0.2)' }}
           >
-            {loading ? 'Memproses...' : 'Konfirmasi & Bayar'}
+            Bayar Sekarang
           </Button>
-          <Button onClick={() => setOpenConfirm(false)} fullWidth sx={{ color: 'text.secondary', fontWeight: 700, textTransform: 'none' }}>
-            Nanti Saja
-          </Button>
+          <Button onClick={() => setOpenConfirm(false)} fullWidth sx={{ color: '#94A3B8', fontWeight: 800 }}>Mungkin Nanti</Button>
         </DialogActions>
       </Dialog>
       
-      {/* Success Notification */}
-      <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={() => setOpenSnackbar(false)}>
-        <Alert severity="success" sx={{ width: '100%' }}>Pembelian Berhasil! Mengalihkan ke Dashboard...</Alert>
-      </Snackbar>
+      {/* Success Modal */}
+      <Dialog open={openSnackbar} PaperProps={{ sx: { borderRadius: 8, p: 4, textAlign: 'center' } }}>
+        <Box sx={{ mb: 2, color: '#4CAF50' }}><WifiIcon sx={{ fontSize: 80 }} /></Box>
+        <Typography variant="h4" sx={{ fontWeight: 900, mb: 1 }}>Berhasil!</Typography>
+        <Typography variant="body1" sx={{ color: '#64748B', fontWeight: 600, mb: 4 }}>Paket internetmu sudah aktif. Selamat berselancar!</Typography>
+        <Button variant="contained" fullWidth onClick={() => navigate('/dashboard-customer')} sx={{ py: 1.5, borderRadius: 4, fontWeight: 900, bgcolor: '#FF7043' }}>Ke Dashboard</Button>
+      </Dialog>
     </Box>
   );
 };
