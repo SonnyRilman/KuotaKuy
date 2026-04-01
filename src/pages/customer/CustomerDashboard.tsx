@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Container, Typography, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Chip, Button, Avatar, Skeleton, Divider, IconButton, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Container, Typography, Grid, Paper, Table, TableBody, TableCell, TableHead, TableRow, Chip, Button, Avatar, Skeleton, Divider, IconButton, useMediaQuery, useTheme } from '@mui/material';
 import { 
   ReceiptLong as TransactionIcon, 
   AccountBalanceWallet as WalletIcon, 
-  AddCircle as AddIcon, 
   NotificationsActive as NotifIcon,
   Timeline as StatsIcon,
-  ArrowForward as ArrowIcon
+  ArrowForward as ArrowIcon,
+  ElectricBolt as BoltIcon
 } from '@mui/icons-material';
 import Navbar from '../../components/Layout/Navbar';
 import { useAuth } from '../../context/AuthContext';
@@ -166,18 +166,18 @@ const CustomerDashboard: React.FC = () => {
               </Paper>
 
               <Paper elevation={0} sx={{ p: 4, borderRadius: 6, bgcolor: 'white', border: '1px solid #F1F5F9' }}>
-                 <Typography variant="subtitle2" sx={{ fontWeight: 900, mb: 3, color: '#1E293B', letterSpacing: 1 }}>SUMMARY</Typography>
+                 <Typography variant="subtitle2" sx={{ fontWeight: 900, mb: 3, color: '#1E293B', letterSpacing: 1 }}>RINGKASAN AKTIVITAS</Typography>
                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                        <Box sx={{ p: 1, bgcolor: '#F0F9FF', color: '#0EA5E9', borderRadius: 2, display: 'flex' }}><StatsIcon font-size="small" /></Box>
+                        <Box sx={{ p: 1, bgcolor: '#F0F9FF', color: '#0EA5E9', borderRadius: 2, display: 'flex' }}><StatsIcon fontSize="small" /></Box>
                         <Typography variant="body2" sx={{ fontWeight: 700, color: '#475569' }}>Total Belanja</Typography>
                       </Box>
                       <Typography sx={{ fontWeight: 900, color: '#1E293B' }}>{stats.count}x</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                        <Box sx={{ p: 1, bgcolor: '#F8FAFC', color: '#64748B', borderRadius: 2, display: 'flex' }}><TransactionIcon font-size="small" /></Box>
+                        <Box sx={{ p: 1, bgcolor: '#FFF1F2', color: '#F43F5E', borderRadius: 2, display: 'flex' }}><TransactionIcon fontSize="small" /></Box>
                         <Typography variant="body2" sx={{ fontWeight: 700, color: '#475569' }}>Total Pengeluaran</Typography>
                       </Box>
                       <Typography sx={{ fontWeight: 900, color: '#FF7043' }}>{formatRupiah(stats.total)}</Typography>
@@ -201,7 +201,7 @@ const CustomerDashboard: React.FC = () => {
                   <Typography variant="body2" sx={{ mb: 3, opacity: 0.9, fontWeight: 500 }}>Streaming, download, dan scroll sepuasnya tanpa batas kuota.</Typography>
                   <Button variant="contained" sx={{ bgcolor: 'white', color: '#FF7043', fontWeight: 900, borderRadius: 3, textTransform: 'none', px: 4, py: 1.2 }}>Ambil Sekarang</Button>
                 </Box>
-                <AddIcon sx={{ fontSize: 160, position: 'absolute', right: -30, bottom: -30, opacity: 0.15 }} />
+                <BoltIcon sx={{ fontSize: 160, position: 'absolute', right: -30, bottom: -30, opacity: 0.15 }} />
               </Paper>
 
               <Paper elevation={0} sx={{ p: { xs: 2.5, md: 4 }, borderRadius: 8, bgcolor: 'white', border: '1px solid #F1F5F9' }}>

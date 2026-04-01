@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Container, Typography, Grid, Card, CardContent, Button, TextField, InputAdornment, Skeleton, Dialog, DialogTitle, DialogContent, DialogActions, Divider, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Container, Typography, Grid, Card, CardContent, Button, TextField, InputAdornment, Skeleton, Dialog, DialogTitle, DialogContent, DialogActions, Paper } from '@mui/material';
 import { Search as SearchIcon, Wifi as WifiIcon, AccessTime as TimeIcon } from '@mui/icons-material';
 import { packageService, transactionService } from '../../services/allServices';
 import { useAuth } from '../../context/AuthContext';
@@ -21,8 +21,6 @@ const PackagesPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { user } = useAuth();
   const navigate = useNavigate();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
   const [selectedPkg, setSelectedPkg] = useState<Package | null>(null);

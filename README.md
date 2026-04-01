@@ -9,7 +9,7 @@ Platform penjualan paket data internet berbasis **React.js + TypeScript** yang m
 | Kategori | Detail |
 | :--- | :--- |
 | **Tanggal Mulai** | 31 Maret 2026 |
-| **Tanggal Selesai** | 31 Maret 2026 |
+| **Tanggal Selesai** | 1 April 2026 |
 | **Waktu Mulai** | 09:00 WIB |
 | **Waktu Selesai** | 15:40 WIB |
 | **Total Waktu** | ± 6.5 Jam |
@@ -19,6 +19,8 @@ Platform penjualan paket data internet berbasis **React.js + TypeScript** yang m
 ## Fitur Utama
 
 ### Sisi Customer (Public)
+* **KuyBot AI (Chatbot):** Asisten virtual pintar yang membantu merekomendasikan paket data terbaik dan memberikan bantuan instan 24/7.
+* **Progressive Web App (PWA):** Mendukung instalasi aplikasi di perangkat HP dan Desktop dengan akses yang lebih cepat dan dukungan offline.
 * **Landing Page:** Implementasi hero section dengan integrasi paket data unggulan.
 * **Katalog Paket:** Browsing paket data secara real-time tanpa perlu login.
 * **Sistem Autentikasi:** Manajemen sesi menggunakan Context API untuk register dan login.
@@ -37,6 +39,7 @@ Platform penjualan paket data internet berbasis **React.js + TypeScript** yang m
 ## Spesifikasi Teknis (Tech Stack)
 
 * **Frontend:** React.js v18/v19 (Vite)
+* **PWA Engine:** vite-plugin-pwa (Service Worker & Manifest)
 * **Bahasa:** TypeScript (Type-Safe Environment)
 * **Styling & UI:** Material UI (MUI) v7 + Custom Theme
 * **Routing:** React Router DOM v7
@@ -61,16 +64,15 @@ npm install
 ### 3. Menjalankan Mock Backend (Terminal 1)
 Proyek ini menggunakan `json-server` untuk mensimulasikan database RESTful:
 ```bash
-npx json-server --watch db.json --port 3002
+npx json-server --watch db.json --port 3001
 ```
-*Port 3002 digunakan untuk menghindari konflik dengan port pengembangan React.*
 
 ### 4. Menjalankan Aplikasi (Terminal 2)
 Jalankan server pengembangan Vite:
 ```bash
 npm run dev
 ```
-Aplikasi akan dapat diakses melalui link yang muncul di terminal (default: `http://localhost:5173`).
+Akses di `http://localhost:5173`. Fitur PWA memungkinkan aplikasi diinstal melalui ikon browser.
 
 ---
 
@@ -80,8 +82,8 @@ Aplikasi akan dapat diakses melalui link yang muncul di terminal (default: `http
 | Atribut | Keterangan |
 | :--- | :--- |
 | **URL Login** | http://localhost:5173/login |
-| **Username** | customer1 |
-| **Password** | customer123 |
+| **Username** | albertus |
+| **Password** | albertus |
 
 ### Akun Admin
 | Atribut | Keterangan |
@@ -96,7 +98,7 @@ Aplikasi akan dapat diakses melalui link yang muncul di terminal (default: `http
 
 ```text
 src/
-├── components/          # Komponen UI Reusable (Layout, Navbar, Sidebar)
+├── components/          # Komponen UI Reusable (Layout, Navbar, Sidebar, ChatWidget)
 ├── context/             # Manajemen State Global (AuthContext)
 ├── pages/
 │   ├── customer/        # Halaman Sisi Pelanggan
@@ -123,8 +125,8 @@ src/
 **Sonny Rilman**
 Frontend Developer Candidate
 **Email:** rilmasonny@gmail.com
-**Tanggal Pengerjaan:** 31 Maret 2026
+**Tanggal Pengerjaan:** 31 Maret 2026 - 1 April 2026
 
 ---
 
-**Catatan:** Proyek ini dikembangkan secara mandiri sebagai bagian dari Technical Test seleksi Frontend Developer.
+**Catatan:** Proyek ini dikembangkan secara mandiri sebagai bagian dari Technical Test seleksi Frontend Developer dengan tambahan fitur PWA dan dukungan Chatbot AI.

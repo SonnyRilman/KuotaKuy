@@ -4,7 +4,7 @@ import {
   IconButton, Drawer, List, ListItem, ListItemButton, 
   ListItemIcon, ListItemText, useMediaQuery, useTheme 
 } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { 
   Wifi as WifiIcon, 
   Login as LoginIcon, 
@@ -13,13 +13,18 @@ import {
   ShoppingBag as PackageIcon,
   Logout as LogoutIcon,
   Menu as MenuIcon,
-  Close as CloseIcon
+  Close as CloseIcon,
+  ElectricBolt as BoltIcon,
+  Diamond as DiamondIcon,
+  SupportAgent as SupportIcon,
+  VerifiedUser as ShieldIcon
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 
 const Navbar: React.FC = () => {
   const { user, logoutCustomer } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -39,50 +44,6 @@ const Navbar: React.FC = () => {
     { text: 'Paket', icon: <PackageIcon />, path: '/packages' },
   ];
 
-  const drawer = (
-    <Box sx={{ width: 280, height: '100%', bgcolor: 'white', p: 2 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4, px: 1 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', color: 'primary.main' }}>
-          <WifiIcon sx={{ mr: 1 }} />
-          <Typography variant="h6" sx={{ fontWeight: 900 }}>KuotaKuy</Typography>
-        </Box>
-        <IconButton onClick={handleDrawerToggle}><CloseIcon /></IconButton>
-      </Box>
-      
-      <List>
-        {menuItems.map((item) => (
-          <ListItem key={item.text} disablePadding sx={{ mb: 1 }}>
-            <ListItemButton component={Link} to={item.path} onClick={handleDrawerToggle} sx={{ borderRadius: 3 }}>
-              <ListItemIcon sx={{ color: 'primary.main' }}>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} primaryTypographyProps={{ fontWeight: 700 }} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-
-        <Box sx={{ mt: 4, pt: 4, borderTop: '1px solid #F5F5F5' }}>
-          {!user ? (
-            <>
-              <Button fullWidth component={Link} to="/login" onClick={handleDrawerToggle} variant="outlined" startIcon={<LoginIcon />} color="primary" sx={{ borderRadius: 4, mb: 2, py: 1.5 }}>
-                Masuk
-              </Button>
-              <Button fullWidth component={Link} to="/register" onClick={handleDrawerToggle} variant="contained" color="primary" sx={{ borderRadius: 4, py: 1.5, fontWeight: 800 }}>
-                Daftar Akun
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button fullWidth component={Link} to="/dashboard-customer" onClick={handleDrawerToggle} variant="outlined" startIcon={<DashboardIcon />} color="primary" sx={{ borderRadius: 4, mb: 2, py: 1.5 }}>
-                Dashboard
-              </Button>
-              <Button fullWidth onClick={handleLogout} variant="contained" color="error" startIcon={<LogoutIcon />} sx={{ borderRadius: 4, py: 1.5, fontWeight: 800 }}>
-                Logout
-              </Button>
-            </>
-          )}
-        </Box>
-      </List>
-    </Box>
-  );
 
   return (
     <Box>
@@ -96,7 +57,27 @@ const Navbar: React.FC = () => {
           display: 'inline-block', pl: '100%', animation: 'marqueeGlobal 35s linear infinite',
           '@keyframes marqueeGlobal': { '0%': { transform: 'translateX(0)' }, '100%': { transform: 'translateX(-100%)' } }
         }}>
-          ⚡ Potongan 50% Untuk Pengguna Baru &nbsp;&nbsp; 💎 Paket Sultan Lagi Diskon Besar &nbsp;&nbsp; Aktivasi Instan Tanpa Ribet &nbsp;&nbsp; 🛠️ Support 24/7 Siap Membantu &nbsp;&nbsp; 🛡️ Transaksi Aman & Terpercaya
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <BoltIcon sx={{ fontSize: 16 }} /> Potongan 50% Untuk Pengguna Baru
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <DiamondIcon sx={{ fontSize: 16 }} /> Paket Sultan Lagi Diskon Besar
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <SupportIcon sx={{ fontSize: 16 }} /> Support 24/7 Siap Membantu
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <ShieldIcon sx={{ fontSize: 16 }} /> Transaksi 100% Aman & Terpercaya
+            </Box>
+            {/* Repeat for seamless marquee */}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <BoltIcon sx={{ fontSize: 16 }} /> Potongan 50% Untuk Pengguna Baru
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <DiamondIcon sx={{ fontSize: 16 }} /> Paket Sultan Lagi Diskon Besar
+            </Box>
+          </Box>
         </Box>
       </Box>
 
@@ -148,8 +129,158 @@ const Navbar: React.FC = () => {
         </Container>
       </AppBar>
 
-      <Drawer anchor="right" open={mobileOpen} onClose={handleDrawerToggle} ModalProps={{ keepMounted: true }} sx={{ zIndex: 1400 }}>
-        {drawer}
+      <Drawer 
+        anchor="bottom" 
+        open={mobileOpen} 
+        onClose={handleDrawerToggle} 
+        ModalProps={{ keepMounted: true }} 
+        PaperProps={{ 
+          sx: { 
+            borderTopLeftRadius: 32, 
+            borderTopRightRadius: 32, 
+            overflow: 'hidden',
+            maxHeight: '85vh',
+            bgcolor: 'white',
+            boxShadow: '0 -20px 40px rgba(0,0,0,0.1)'
+          } 
+        }}
+        sx={{ zIndex: 2000 }}
+      >
+        <Box sx={{ p: 4, pt: 1, pb: 6 }}>
+          {/* Bottom Sheet Handle */}
+          <Box sx={{ 
+            width: 40, height: 4, bgcolor: '#E0E0E0', borderRadius: 2, 
+            mx: 'auto', mt: 1.5, mb: 4 
+          }} />
+
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', color: 'primary.main' }}>
+              <Box sx={{ 
+                width: 40, height: 40, bgcolor: 'primary.main', borderRadius: 2, 
+                display: 'flex', alignItems: 'center', justifyContent: 'center', mr: 2,
+                boxShadow: '0 8px 16px rgba(59, 130, 246, 0.2)'
+              }}>
+                <WifiIcon sx={{ color: 'white', fontSize: 24 }} />
+              </Box>
+              <Box>
+                <Typography variant="h6" sx={{ fontWeight: 900, lineHeight: 1 }}>KuotaKuy</Typography>
+                <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600 }}>
+                  {user ? `Halo, ${user.name}` : 'Pilihan Paket Hemat'}
+                </Typography>
+              </Box>
+            </Box>
+            <IconButton onClick={handleDrawerToggle} sx={{ bgcolor: '#F5F5F5' }}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
+          
+          <List sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 2, mb: 4 }}>
+            {menuItems.map((item) => {
+              const isActive = location.pathname === item.path;
+              return (
+                <ListItem key={item.text} disablePadding>
+                  <ListItemButton 
+                    component={Link} 
+                    to={item.path} 
+                    onClick={handleDrawerToggle} 
+                    sx={{ 
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: 4,
+                      pt: 3, pb: 2,
+                      bgcolor: isActive ? 'primary.main' : '#FBFBFB',
+                      border: '1px solid',
+                      borderColor: isActive ? 'primary.main' : '#F0F0F0',
+                      color: isActive ? 'white' : 'text.primary',
+                      transition: 'all 0.2s',
+                      '&:hover': { 
+                        bgcolor: isActive ? 'primary.dark' : '#F0F7FF', 
+                        borderColor: isActive ? 'primary.dark' : 'primary.light' 
+                      }
+                    }}
+                  >
+                    <ListItemIcon sx={{ 
+                      color: isActive ? 'white' : 'primary.main', mb: 1.5, minWidth: 0,
+                      '& svg': { fontSize: 28 }
+                    }}>
+                      {item.icon}
+                    </ListItemIcon>
+                    <ListItemText 
+                      primary={item.text} 
+                      primaryTypographyProps={{ 
+                        fontWeight: 700, 
+                        textAlign: 'center',
+                        fontSize: '0.9rem'
+                      }} 
+                    />
+                  </ListItemButton>
+                </ListItem>
+              );
+            })}
+          </List>
+
+          <Box sx={{ pt: 4, borderTop: '1px solid #F5F5F5' }}>
+            {!user ? (
+              <Box sx={{ display: 'flex', gap: 2 }}>
+                <Button 
+                  fullWidth 
+                  component={Link} 
+                  to="/login" 
+                  onClick={handleDrawerToggle} 
+                  variant="outlined" 
+                  startIcon={<LoginIcon />} 
+                  color="primary" 
+                  sx={{ borderRadius: 4, py: 2, fontWeight: 700 }}
+                >
+                  Masuk
+                </Button>
+                <Button 
+                  fullWidth 
+                  component={Link} 
+                  to="/register" 
+                  onClick={handleDrawerToggle} 
+                  variant="contained" 
+                  color="primary" 
+                  sx={{ 
+                    borderRadius: 4, py: 2, fontWeight: 800,
+                    boxShadow: '0 8px 24px rgba(59, 130, 246, 0.25)'
+                  }}
+                >
+                  Daftar
+                </Button>
+              </Box>
+            ) : (
+              <Box sx={{ display: 'flex', gap: 2 }}>
+                <Button 
+                  fullWidth 
+                  component={Link} 
+                  to="/dashboard-customer" 
+                  onClick={handleDrawerToggle} 
+                  variant="outlined" 
+                  startIcon={<DashboardIcon />} 
+                  color="primary" 
+                  sx={{ borderRadius: 4, py: 2, fontWeight: 700 }}
+                >
+                  Dashboard
+                </Button>
+                <Button 
+                  fullWidth 
+                  onClick={handleLogout} 
+                  variant="contained" 
+                  color="error" 
+                  startIcon={<LogoutIcon />} 
+                  sx={{ 
+                    borderRadius: 4, py: 2, fontWeight: 800,
+                    boxShadow: '0 8px 24px rgba(239, 68, 68, 0.25)'
+                  }}
+                >
+                  Logout
+                </Button>
+              </Box>
+            )}
+          </Box>
+        </Box>
       </Drawer>
     </Box>
   );

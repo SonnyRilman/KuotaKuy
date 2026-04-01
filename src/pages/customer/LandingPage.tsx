@@ -10,9 +10,9 @@ import Navbar from '../../components/Layout/Navbar';
 
 const LandingPage: React.FC = () => {
   const featuredPackages = [
-    { title: 'Paket Hemat', quota: '1GB', price: '10.000', color: '#66BB6A' },
-    { title: 'Paket Gaul', quota: '5GB', price: '35.000', color: '#FF7043' },
-    { title: 'Paket Sultan', quota: '20GB', price: '100.000', color: '#FFA726' },
+    { title: 'Paket Hemat', quota: '1GB', price: '10.000', color: '#66BB6A', icon: <WifiIcon sx={{ fontSize: 40 }} /> },
+    { title: 'Paket Gaul', quota: '5GB', price: '35.000', color: '#FF7043', icon: <SpeedIcon sx={{ fontSize: 40 }} /> },
+    { title: 'Paket Sultan', quota: '20GB', price: '100.000', color: '#FFA726', icon: <SignalIcon sx={{ fontSize: 40 }} /> },
   ];
 
   return (
@@ -22,34 +22,6 @@ const LandingPage: React.FC = () => {
       background: 'radial-gradient(circle at 70% 30%, #FFE0B2 0%, #FFF8F5 50%)',
       overflow: 'hidden'
     }}>
-      {/* Premium Promo Bar (Fixed Top) with Modern Icons */}
-      <Box sx={{ 
-        bgcolor: 'primary.main', 
-        color: 'white', 
-        py: 1, 
-        overflow: 'hidden', 
-        whiteSpace: 'nowrap',
-        position: 'fixed',
-        top: 0,
-        width: '100%',
-        zIndex: 1200,
-        fontSize: '0.75rem',
-        fontWeight: 700,
-        textTransform: 'uppercase',
-        letterSpacing: 1.5,
-        boxShadow: '0 5px 15px rgba(255,112,67,0.2)'
-      }}>
-        <Box sx={{ 
-          display: 'inline-block', 
-          animation: 'marquee 35s linear infinite',
-          '@keyframes marquee': {
-            '0%': { transform: 'translateX(0)' },
-            '100%': { transform: 'translateX(-50%)' }
-          }
-        }}>
-          ⚡ Potongan 50% Untuk Pengguna Baru &nbsp;&nbsp; 💎 Paket Sultan Lagi Diskon Besar &nbsp;&nbsp; Aktivasi Instan Tanpa Ribet &nbsp;&nbsp; 🛠️ Support 24/7 Siap Membantu &nbsp;&nbsp; 🛡️ Transaksi 100% Aman & Terpercaya &nbsp;&nbsp;&nbsp;&nbsp; ⚡ Potongan 50% Untuk Pengguna Baru &nbsp;&nbsp; 💎 Paket Sultan Lagi Diskon Besar &nbsp;&nbsp; Aktivasi Instan Tanpa Ribet &nbsp;&nbsp; 🛠️ Support 24/7 Siap Membantu &nbsp;&nbsp; 🛡️ Transaksi 100% Aman & Terpercaya
-        </Box>
-      </Box>
 
       <Navbar />
       
@@ -59,7 +31,7 @@ const LandingPage: React.FC = () => {
         display: 'flex', 
         alignItems: 'center', 
         position: 'relative',
-        pt: { xs: '140px', md: '180px' }, // Increased safe offset for fixed navbar + promo bar
+        pt: { xs: '120px', md: '160px' }, // Balanced offset for fixed navbar
         pb: 8
       }}>
         <Container maxWidth="lg" sx={{ 
@@ -353,7 +325,10 @@ const LandingPage: React.FC = () => {
                       color: 'white', 
                       py: 3, px: 4, 
                       borderRadius: '35% 65% 65% 35% / 30% 30% 70% 70%', 
-                      display: 'inline-block', 
+                      display: 'inline-flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
                       mb: 4,
                       boxShadow: `0 15px 30px ${pkg.color}44`,
                       animation: 'morphing 8s ease-in-out infinite',
@@ -362,6 +337,7 @@ const LandingPage: React.FC = () => {
                         '50%': { borderRadius: '65% 35% 35% 65% / 70% 70% 30% 30%' }
                       }
                     }}>
+                      <Box sx={{ mb: 1, color: 'rgba(255,255,255,0.9)' }}>{pkg.icon}</Box>
                       <Typography variant="h3" sx={{ fontWeight: 900 }}>{pkg.quota}</Typography>
                     </Box>
                     <Typography variant="h4" sx={{ fontWeight: 900, mt: 2 }}>Rp {pkg.price}</Typography>
