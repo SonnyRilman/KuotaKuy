@@ -10,9 +10,6 @@ Platform penjualan paket data internet berbasis **React.js + TypeScript** yang m
 | :--- | :--- |
 | **Tanggal Mulai** | 31 Maret 2026 |
 | **Tanggal Selesai** | 1 April 2026 |
-| **Waktu Mulai** | 09:00 WIB |
-| **Waktu Selesai** | 15:40 WIB |
-| **Total Waktu** | ± 6.5 Jam |
 
 ---
 
